@@ -49,17 +49,25 @@ def register(ctx: Any) -> None:
     try:
         import toolsets
 
-        added = 0
-        for name in _MC_TOOL_NAMES:
-            if name not in toolsets._HERMES_CORE_TOOLS:
-                toolsets._HERMES_CORE_TOOLS.append(name)
-                added += 1
-        logger.info(
-            "mc-tools: registered %d tools (%d added to _HERMES_CORE_TOOLS)",
-            len(_MC_TOOL_NAMES), added,
-        )
+        kanban_ts = toolsets.TOOLSETS.get("kanban") or {}
+        kanban_tools = kanban_ts.get("tools")
+        if isinstance(kanban_tools, list):
+            added = 0
+            for name in _MC_TOOL_NAMES:
+                if name not in kanban_tools:
+                    kanban_tools.append(name)
+                    added += 1
+            logger.info(
+                "mc-tools: registered %d tools (%d added to TOOLSETS['kanban'])",
+                len(_MC_TOOL_NAMES), added,
+            )
+        else:
+            logger.warning(
+                "mc-tools: TOOLSETS['kanban']['tools'] not a list — "
+                "tools registered but won't surface in kanban toolset"
+            )
     except Exception as exc:
         logger.warning(
-            "mc-tools: tools registered but _HERMES_CORE_TOOLS extension "
+            "mc-tools: tools registered but TOOLSETS['kanban'] extension "
             "failed (%s) — set enabled_toolsets: [kanban] manually", exc,
         )
