@@ -1,0 +1,16 @@
+name: mc-tools
+kind: standalone
+version: 0.1.0
+description: |
+  Mission Control (MC) integration tools — 16 mc_* primitives that let
+  a Hermes chief delegate heavy work to an external Next.js+SQLite MC
+  execution backend without pulling in extra Python deps. Tools handle:
+   * mc_pipeline_* (run / list / status / cancel)
+   * mc_exec_approve, mc_exec_approve_list (HITL gates)
+   * mc_agents_list, mc_agent_create
+   * mc_task_* (list / get / create / update / comment / retry)
+   * mc_project_create, mc_cost_summary
+  Gated on HERMES_MC_BASE_URL — without that env var every tool returns
+  a clean "MC not configured" error so Hermes stays usable.
+author: nnnet/AiManager
+repo: https://github.com/nnnet/hermes-plugin-mc-tools
